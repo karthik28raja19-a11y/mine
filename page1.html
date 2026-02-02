@@ -27,10 +27,20 @@
     window.location.href = "page2.html";
   }
 
-  function moveNo() {
-    noBtn.style.transform =
-      `translate(${Math.random()*160-80}px, ${Math.random()*160-80}px)`;
-  }
+ const noBtn = document.getElementById("noBtn");
+
+function moveNo() {
+  const x = Math.random() * 160 - 80; // horizontal random
+  const y = Math.random() * 160 - 80; // vertical random
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+}
+
+// Desktop: move on hover
+noBtn.addEventListener("mouseover", moveNo);
+
+// Mobile / touch: move on touch/click
+noBtn.addEventListener("touchstart", moveNo);
+noBtn.addEventListener("click", moveNo); // fallback for mobile click
 
   // Floating hearts
   setInterval(() => {
