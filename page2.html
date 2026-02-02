@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One More Thing 💕</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Joke bubble container */
+    .joke-container {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
+    /* Individual joke bubble */
+    .joke {
+      background: rgba(255,255,255,0.35);
+      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 14px 20px;
+      font-size: 16px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(20px);
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Scrollbar for mobile */
+    .joke-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .joke-container::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.5);
+      border-radius: 3px;
+    }
+
+    button:hover {
+      box-shadow: 0 0 15px rgba(255, 77, 109, 0.6);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>Just so you know 😄</h1>
+  <button onclick="nextJoke()">Tap me 💖</button>
+
+  <div class="joke-container" id="jokeContainer">
+    <!-- Jokes will appear here -->
+  </div>
+</div>
+
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const music = document.getElementById("music");
+
+  // Continue music if already playing
+  if (localStorage.getItem("musicPlaying") === "true") {
+    music.play().catch(() => {});
+  }
+
+  const jokes = [
+    {emoji:"🍫", text:"I will steal your snacks."},
+    {emoji:"😜", text:"I will annoy you daily."},
+    {emoji:"❤️", text:"But I will love you endlessly."},
+    {emoji:"🍕", text:"I might take your pizza slice too."},
+    {emoji:"😂", text:"I promise to make you laugh every day."}
+  ];
+
+  let i = 0;
+
+  function nextJoke() {
+    if(i < jokes.length) {
+      music.play(); // Ensure music keeps playing
+      const container = document.getElementById("jokeContainer");
+
+      // Create bubble
+      const div = document.createElement("div");
+      div.className = "joke";
+      div.innerHTML = `<span>${jokes[i].emoji}</span>${jokes[i].text}`;
+
+      container.appendChild(div);
+      i++;
+
+      // Force animation restart for newly added element
+      div.style.animation = 'none';
+      div.offsetHeight; /* trigger reflow */
+      div.style.animation = null;
+
+      // Scroll down automatically
+      container.scrollTop = container.scrollHeight;
+    }
+  }
+</script>
+
+</body>
+</html>
